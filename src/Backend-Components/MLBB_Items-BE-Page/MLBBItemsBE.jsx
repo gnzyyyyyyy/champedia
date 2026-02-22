@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MLBBItemsBE.css";
-
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
 const MLBBItemsBE = ({theme}) => {
-
     const [items, setItems] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
@@ -13,78 +12,102 @@ const MLBBItemsBE = ({theme}) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [itemToDelete, setItemToDelete] = useState(null);
 
+    const [selectedType, setSelectedType] = useState("All");
+
     const [newItem, setNewItem] = useState({
-        item_name: "",
-        item_type: "",
-        item_description: "",
+        itemName: "",
+        itemType: "",
+        itemDescription: "",
+        itemImage: "",
     });
 
+    //Load items from backend
+    useEffect(() => {
+        if(selectedType === "All"){
+            axios.get("http://localhost:8080/mlbb_items")
+                .then(res => setItems(res.data))
+        } else {
+            axios.get(`http://localhost:8080/mlbb_items/type/${selectedType}`)
+                .then(res => setItems(res.data))
+        }
+    }, [selectedType]);
+
+    const handleTypeFilter = (type) => {
+        setSelectedType(type);
+    }
+
+    // Handle form inputs
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewItem({ ...newItem, [name]: value });
     };
 
-    const handleItemImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setNewItem({ ...newItem, item_image: imageURL });
-        }
-    };
-
+    // Add new hero
     const handleAddItem = () => {
-        if (!newItem.item_name || !newItem.item_type || !newItem.item_description) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        const newItemData = {
-            ...newItem,
-            item_id: items.length + 1,
-        };
-
-        setItems([...items, newItemData]);
-        setShowForm(false);
+        axios.post("http://localhost:8080/mlbb_items", newItem)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                setSelectedType("All");
+            })
+            .catch(err => {
+                if (err.response && err.response.status === 409) {
+                    alert(err.response.data);
+                } else {
+                    alert("An error occurred while adding the item.");
+                }
+            })
     };
 
-    const handleEdit = (item_id) => {
-        const item = items.find((i) => i.item_id === item_id);
-        if (item) {
-            setEditItemID(item_id);
-            setNewItem(item);
-            setIsEditing(true);
-            setShowForm(true);
-        }
+    // Edit hero
+    const handleEdit = (id) => {
+        const item = items.find(i => i.id === id);
+        setEditItemID(id);
+        setNewItem(item);
+        setIsEditing(true);
+        setShowForm(true);
     };
 
+    // Update hero
     const handleUpdateItem = () => {
-        setItems(
-            items.map((i) =>
-                i.item_id === editItemID ? { ...i, ...newItem } : i
-            )
-        );
-        closeForm();
+        axios.put(`http://localhost:8080/mlbb_items/${editItemID}`, newItem)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            });
     };
 
-    const handleRemove = (item_id) => {
-        setItemToDelete(item_id);
+    // Remove hero
+    const handleRemove = (id) => {
+        setItemToDelete(id);
         setShowConfirmation(true);
     };
 
+    // Confirm remove
     const confirmRemove = () => {
-        setItems(items.filter((i) => i.item_id !== itemToDelete));
-        setShowConfirmation(false);
-        setItemToDelete(null);
+        axios.delete(`http://localhost:8080/mlbb_items/${itemToDelete}`)
+            .then(() => {
+                setShowConfirmation(false);
+                setItemToDelete(null);
+                window.location.reload();
+            });
     };
 
+    // Close and reset
     const closeForm = () => {
         setShowForm(false);
         setIsEditing(false);
         setEditItemID(null);
+        resetForm();
+    };
+
+    const resetForm = () => {
         setNewItem({
-            item_name: "",
-            item_type: "",
-            item_description: "",
+            itemName: "",
+            itemType: "",
+            itemDescription: "",
+            itemImage: "",
         });
     };
 
@@ -98,7 +121,7 @@ const MLBBItemsBE = ({theme}) => {
                         Add Item +
                     </button>
                     {["Attack", "Defense", "Magic", "Movement", "Jungle", "Roaming", "All"].map((category) => (
-                        <button key={category} className="nav-btn">
+                        <button key={category} className="nav-btn" onClick={() => handleTypeFilter(category)}>
                             {category}
                         </button>
                     ))}
@@ -107,7 +130,7 @@ const MLBBItemsBE = ({theme}) => {
 
             {/* Main Content */}
             <main className="main-content">
-                <h1 className="region-title">Items</h1>
+                <h1 className="region-title">Items - {selectedType}</h1>
             </main>
 
             {/* Table Section */}
@@ -132,30 +155,30 @@ const MLBBItemsBE = ({theme}) => {
                                 </tr>
                             ) : (
                                 items.map((row) => (
-                                    <tr key={row.item_id}>
-                                        <td>{row.item_id}</td>
+                                    <tr key={row.id}>
+                                        <td>{row.id}</td>
                                         <td>
                                             <div className="team-cell">
                                             <img
-                                            src={row.item_image}
-                                            alt={row.item_name}
+                                            src={row.itemImage}
+                                            alt={row.itemName}
                                             className="team-icon"
                                             />
-                                            <span>{row.item_name}</span>
+                                            <span>{row.itemName}</span>
                                         </div>
                                         </td>
-                                        <td>{row.item_type}</td>
-                                        <td>{row.item_description}</td>
+                                        <td>{row.itemType}</td>
+                                        <td>{row.itemDescription}</td>
                                         <td>
                                             <button
                                                 className="edit-btn"
-                                                onClick={() => handleEdit(row.item_id)}
+                                                onClick={() => handleEdit(row.id)}
                                             >
                                                 Edit
                                             </button>
                                             <button
                                                 className="remove-btn"
-                                                onClick={() => handleRemove(row.item_id)}
+                                                onClick={() => handleRemove(row.id)}
                                             >
                                                 Remove
                                             </button>
@@ -171,42 +194,61 @@ const MLBBItemsBE = ({theme}) => {
             {/* Add / Edit Modal */}
             {showForm && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <form
+                        className="modal-content"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            isEditing ? handleUpdateItem() : handleAddItem();
+                        }}
+                        >
                         <h2>{isEditing ? "Edit Item" : "Add New Item"}</h2>
 
                         <div className="form-group">
                         <label>Item Name:</label>
-                        <input name="item_name" value={newItem.item_name} onChange={handleChange}/>
+                        <input name="itemName" value={newItem.itemName} onChange={handleChange} required/>
                         </div>
 
                         <div className="form-group">
-                        <label>Item Type:</label>
-                        <input name="item_type" value={newItem.item_type} onChange={handleChange}/>
+                            <label>Item Type:</label>
+                            <select
+                                name="itemType"
+                                value={newItem.itemType}
+                                onChange={handleChange}
+                                required
+                            >
+                                <option value="">-- Select Type --</option>
+                                <option value="Attack">Attack</option>
+                                <option value="Defense">Defense</option>
+                                <option value="Magic">Magic</option>
+                                <option value="Movement">Movement</option>
+                                <option value="Jungle">Jungle</option>
+                                <option value="Roaming">Roaming</option>
+                            </select>
                         </div>
 
                         <div className="form-group">
                         <label>Description:</label>
-                        <textarea name="item_description" value={newItem.item_description} onChange={handleChange}/>
+                        <textarea name="itemDescription" value={newItem.itemDescription} onChange={handleChange} required/>
                         </div>
 
                         <div className="form-group">
                             <label>Item Image:</label>
                             <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleItemImageChange}
+                                name="itemImage"
+                                value={newItem.itemImage}
+                                onChange={handleChange}
+                                required
                             />
-                            {newItem.item_image && (
+                            {newItem.itemImage && (
                                 <div className="image-preview">
-                                    <img src={newItem.item_image} alt="Preview" />
+                                    <img src={newItem.itemImage} alt="Preview" />
                                 </div>
                             )}
                         </div>
 
                         <div className="modal-actions">
                             <button
-                                className="add-btn"
-                                onClick={isEditing ? handleUpdateItem : handleAddItem}
+                                className="add-btn" type="submit"
                             >
                                 {isEditing ? "Update" : "Add"}
                             </button>
@@ -214,7 +256,7 @@ const MLBBItemsBE = ({theme}) => {
                                 Cancel
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
 

@@ -1,0 +1,34 @@
+/* BadmintonPlayers.css */
+
+.players-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  padding: 30px;
+}
+
+.player-card {
+  background: #1a1a2e;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+  color: white;
+}
+
+.player-avatar {
+  width: 90px;
+  height: 90px;
+  background: #2a2a3d;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36px;
+  font-weight: bold;
+  margin: 0 auto 14px;
+}
+
+.player-card span {
+  color: #cba468;
+  font-weight: bold;
+}

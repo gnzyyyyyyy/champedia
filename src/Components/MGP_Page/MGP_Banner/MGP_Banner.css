@@ -1,0 +1,29 @@
+.mgp-banner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.banner-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* CENTER OVERLAY */
+.banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Optional: kalau mau logo punya max size */
+.banner-title {
+  max-width: 80%;
+  height: auto;
+}

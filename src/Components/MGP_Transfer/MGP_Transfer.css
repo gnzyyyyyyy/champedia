@@ -1,0 +1,103 @@
+.TRF_mgpTransfer_wrapper {
+  width: 100%;
+  padding: 40px 0;
+  background: #02001d;
+  color: white;
+  font-family: Inter, sans-serif;
+  min-height: 100vh;
+}
+
+/* Title */
+.TRF_mgpTransfer_title {
+  text-align: center;
+  font-size: 64px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* Category Buttons */
+.TRF_categories {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.TRF_category_button {
+  background: #2d2d2d;
+  border: 1px solid #444;
+  padding: 10px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.TRF_category_button.TRF_active {
+  background: #ff0054;
+  border-color: #ff0054;
+}
+
+.TRF_category_button:hover {
+  background: #3a3a3a;
+}
+
+/* Card Container */
+.TRF_transfer_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 30px;
+  width: 90%;
+  margin: auto;
+}
+
+/* Card */
+.TRF_transfer_card {
+  background: #111429;
+  border: 1px solid #333;
+  border-radius: 14px;
+  padding: 20px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.TRF_transfer_card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.35);
+}
+
+/* Card Text */
+.TRF_transfer_info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.TRF_transfer_rider {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.TRF_transfer_move {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.TRF_fromTeam {
+  color: #ffa500;
+}
+
+.TRF_arrow {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.TRF_toTeam {
+  color: #00ff9c;
+}

@@ -12,10 +12,10 @@ import valoMaps from "../../../assets/images/valo_maps.png";
 
 const items = [
     { id: 1, name: "Teams", image: valoTeams, path: "/Valo_Teams" },
-    { id: 2, name: "Players", image: valoPlayers }, 
-    { id: 3, name: "Tournaments", image: valoTournaments },
+    { id: 2, name: "Players", image: valoPlayers, path: "/Valo_Players" }, 
+    { id: 3, name: "Tournaments", image: valoTournaments, path: "/Valo_Tours" },
     { id: 4, name: "Agents", image: valoAgents, path: "/Valo_Agents" },
-    { id: 4, name: "Maps", image: valoMaps },
+    { id: 4, name: "Maps", image: valoMaps, path:"/VALOMapsPage" },
 ];
 
 const BannerValo = ({theme}) => {

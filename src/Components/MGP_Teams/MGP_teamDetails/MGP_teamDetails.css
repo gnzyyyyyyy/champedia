@@ -1,0 +1,86 @@
+.TOD_team-details {
+  width: 100%;
+  height: 836px;
+  position: relative;
+  background-color: #02001d;
+  overflow: hidden;
+  text-align: left;
+  font-size: 96px;
+  color: #fff;
+  font-family: Inter, sans-serif;
+}
+
+/* Wrapper utama */
+.TOD_team-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 836px;
+  overflow: hidden;
+}
+
+/* Logo tim */
+.TOD_team-aprilia-img {
+  position: absolute;
+  top: 42px;
+  left: 792px;
+  width: 513px;
+  height: 894px;
+  object-fit: cover;
+}
+
+/* Nama tim */
+.TOD_team-name {
+  position: absolute;
+  top: 67px;
+  left: 71px;
+  line-height: 1.1;
+  font-weight: 700;
+  font-size: 90px;
+}
+
+/* Box rider */
+.TOD_team-rider-box {
+  position: absolute;
+  top: 576px;
+  left: 71px;
+  border-radius: 10px;
+  background-color: #2b2b2b;
+  width: 362px;
+  height: 192px;
+  overflow: hidden;
+  font-size: 32px;
+}
+
+/* Garis di box */
+.TOD_team-line {
+  position: absolute;
+  top: 96px;
+  left: 9px;
+  background-color: #353535;
+  width: 343px;
+  height: 3px;
+}
+
+/* Nama rider */
+.TOD_team-rider-name {
+  position: absolute;
+  top: 33px;
+  left: 116px;
+}
+
+.TOD_team-rider-subname {
+  position: absolute;
+  top: 123px;
+  left: 116px;
+}
+
+/* Judul */
+.TOD_team-riders-title {
+  position: absolute;
+  top: 489px;
+  left: 71px;
+  font-size: 55px;
+  font-weight: 600;
+}

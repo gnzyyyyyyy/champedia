@@ -1,0 +1,106 @@
+.news_section {
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.news_header {
+  margin-bottom: 15px;
+}
+
+.news_text {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #000000;
+}
+
+/* Wrapper supaya tombol sejajar dengan kontainer */
+.news_wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scroll container horizontal */
+.scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 5px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Tombol panah */
+.scroll-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.3s;
+  z-index: 5;
+}
+
+.scroll-button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.scroll-button.left {
+  left: 0;
+}
+
+.scroll-button.right {
+  right: 0;
+}
+
+/* Card */
+/* Card */
+.card.dark {
+  min-width: 290px;
+  flex-shrink: 0;
+  background-color: goldenrod; /* GOLDENROD untuk dark mode */
+  border: 2px solid #000000;   /* border hitam */
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.card.light {
+  min-width: 290px;
+  flex-shrink: 0;
+  background-color: goldenrod; /* GOLDENROD untuk light mode */
+  border: 2px solid #ffffff;   /* border putih */
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.cardLabel {
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 10px;
+}

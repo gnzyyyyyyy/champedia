@@ -1,0 +1,192 @@
+/* === Base === */
+.pubg-tour {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Header === */
+.header {
+  background-color: #0a002f;
+  border-bottom: 3px solid #955e10;
+  padding: 1rem 0;
+}
+
+.header-logo {
+  height: 100px;
+  object-fit: contain;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.75rem;
+}
+
+.nav-btn {
+  background-color: #955e10;
+  border: 2px solid #000;
+  border-radius: 6px;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: #b87712;
+}
+
+/* === Main Section === */
+.main-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.region-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 4px #000;
+}
+
+/* === Table Wrapper === */
+.results-section {
+  width: 100%;
+  max-width: 1100px; /* Controls max width */
+  margin: 0 auto; /* Centers it */
+  overflow-x: auto; /* Allows scroll on very small screens */
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+/* === Section Titles === */
+.tournament-results {
+  margin-top: 3rem;
+}
+
+.results-subtitle {
+  font-size: 1.5rem;
+  color: #cba468;
+  margin-bottom: 1rem;
+  text-align: left;
+  border-left: 4px solid #955e10;
+  padding-left: 10px;
+}
+
+/* === Tables === */
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #955e10;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid #955e10;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.results-table th {
+  background-color: #955e10;
+  color: #000;
+  font-weight: 700;
+}
+
+.results-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.results-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* === Team Cell Layout === */
+.team-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: flex-start;
+}
+
+.team-icon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  padding: 4px;
+}
+
+.edit-btn,
+.remove-btn {
+  padding: 5px 10px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+
+.edit-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.remove-btn {
+  background-color: #f44336;
+  color: white;
+}
+
+.remove-btn:hover {
+  background-color: #d32f2f;
+}
+
+
+/* === Responsive === */
+@media (max-width: 1024px) {
+  .results-section {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .region-title {
+    font-size: 2rem;
+  }
+
+  .results-table th,
+  .results-table td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .team-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+@media (max-width: 500px) {
+  .results-table th,
+  .results-table td {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}

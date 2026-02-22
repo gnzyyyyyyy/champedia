@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import valorantImage from "../../../assets/images/valorant.png";
 import mlbbImage from "../../../assets/images/mlbb.png";
 import pubgImage from "../../../assets/images/pubgm.png";
-import cs2Image from "../../../assets/images/cs2.png";
+import crImage from "../../../assets/images/cr.png";
 
 export const EsportChoices = ({ theme }) => {
   const navigate = useNavigate();
@@ -21,7 +21,7 @@ export const EsportChoices = ({ theme }) => {
       navigate("/pubg");
     }
     if (id === 4) {
-      navigate("/cs2");
+      navigate("/cr");
     }
   };
 
@@ -29,14 +29,14 @@ export const EsportChoices = ({ theme }) => {
     { id: 1, name: "Valorant" },
     { id: 2, name: "Mobile Legends: Bang Bang" },
     { id: 3, name: "PUBG Mobile" },
-    { id: 4, name: "CS2" },
+    { id: 4, name: "Clash Royale" },
   ];
 
   const images = {
     1: valorantImage,
     2: mlbbImage,
     3: pubgImage,
-    4: cs2Image,
+    4: crImage,
   };
 
   return (

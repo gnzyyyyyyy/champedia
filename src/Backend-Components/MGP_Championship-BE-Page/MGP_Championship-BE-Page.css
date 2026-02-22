@@ -1,0 +1,155 @@
+.champ-page {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* HEADER */
+.champ-header-banner {
+  width: 100%;
+  border-radius: 16px;
+}
+
+.champ-nav {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.champ-nav-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.champ-nav-active {
+  background: var(--gold);
+  color: #fff;
+}
+
+/* TITLE */
+.champ-main {
+  margin: 30px 0;
+}
+
+.champ-title {
+  font-size: 2rem;
+}
+
+/* TABLE */
+.champ-table-wrapper {
+  overflow-x: auto;
+}
+
+.champ-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card-bg);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.champ-table thead {
+  background: var(--gold);
+  color: #fff;
+}
+
+.champ-table th,
+.champ-table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.champ-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.champ-btn-edit {
+  background: #4c8bf5;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.champ-btn-remove {
+  background: #d9534f;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+.champ-btn-add {
+  background: var(--gold);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+}
+
+.champ-btn-back {
+  background: #444;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+}
+
+/* MODAL */
+.champ-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: #00000080;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.champ-modal {
+  background: var(--card-bg);
+  padding: 26px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 480px;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.champ-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.champ-standings {
+  margin-top: 12px;
+}
+
+.champ-standing-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.champ-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.champ-empty {
+  text-align: center;
+}

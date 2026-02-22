@@ -96,6 +96,12 @@
   background-color: rgba(255, 255, 255, 0.15);
 }
 
+.results-table td.desc-cell {
+  white-space: normal !important;
+  word-break: break-word;
+  max-width: 300px; 
+}
+
 /* === Team Cell Layout === */
 .team-cell {
   display: flex;

@@ -1,0 +1,267 @@
+/* ===========================
+   General Page Layout
+=========================== */
+.tournaments-page {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===========================
+   Header
+=========================== */
+.header {
+  background-color: #0a002f;
+  border-bottom: 3px solid #955e10;
+  padding: 1rem 0;
+}
+
+.header-logo {
+  height: 100px;
+  object-fit: contain;
+}
+
+.nav-tabs {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 0.75rem;
+}
+
+.nav-btn {
+  background-color: #955e10;
+  border: 2px solid #000;
+  border-radius: 6px;
+  color: #fff;
+  padding: 8px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nav-btn:hover {
+  background-color: #b87712;
+}
+
+/* ===========================
+   Main Content
+=========================== */
+.main-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.region-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 4px #000;
+}
+
+/* ===========================
+   Tournament Table
+=========================== */
+.results-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 3rem auto;
+  padding: 0 1rem;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #955e10;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.results-table th,
+.results-table td {
+  border: 1px solid #955e10;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.results-table th {
+  background-color: #955e10;
+  color: #000;
+  font-weight: 700;
+}
+
+.results-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.results-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Tournament Logo Thumbnail */
+.team-icon {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 3px;
+}
+
+/* ===========================
+   Buttons
+=========================== */
+.edit-btn,
+.remove-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s;
+}
+
+.edit-btn {
+  background-color: #007bff;
+  color: #fff;
+  margin-right: 8px;
+}
+
+.edit-btn:hover {
+  background-color: #339aff;
+}
+
+.remove-btn {
+  background-color: #b32d0f;
+  color: #fff;
+}
+
+.remove-btn:hover {
+  background-color: #d34c2b;
+}
+
+/* ===========================
+   Modal
+=========================== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #0a002f;
+  border: 3px solid #955e10;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 420px;
+  color: #fff;
+  text-align: left;
+  box-shadow: 0 0 20px rgba(149, 94, 16, 0.6);
+}
+
+.modal-content h2 {
+  text-align: center;
+  color: #955e10;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid #955e10;
+  border-radius: 6px;
+  background: transparent;
+  color: #fff;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+}
+
+.add-btn {
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-btn:hover {
+  background-color: #3bd35f;
+}
+
+.back-btn {
+  background-color: #b32d0f;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background-color: #d34c2b;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+@media (max-width: 1024px) {
+  .results-section {
+    max-width: 95%;
+  }
+}
+
+@media (max-width: 768px) {
+  .region-title {
+    font-size: 2rem;
+  }
+
+  .results-table th,
+  .results-table td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+
+  .team-icon {
+    width: 35px;
+    height: 35px;
+  }
+}
+
+@media (max-width: 500px) {
+  .results-table th,
+  .results-table td {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}

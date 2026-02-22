@@ -1,22 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MLBBToursBE.css";
-
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
 const MLBBToursBE = ({ theme }) => {
-    const [tournaments, setTournaments] = useState([
-        {
-            tournament_id: 1,
-            tournament_name: "M5 World Championship",
-            tier: "S",
-            region: "Global",
-            location: "Manila, Philippines",
-            date_start: "2025-11-01",
-            date_end: "2025-11-15",
-            prize_pool: "$900,000",
-            tournament_logo: "",
-        },
-    ]);
+    const [tournaments, setTournaments] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -24,95 +12,93 @@ const MLBBToursBE = ({ theme }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [tournamentToDelete, setTournamentToDelete] = useState(null);
 
+    const [selectedTier, setSelectedTier] = useState("All");
+
     const [newTournament, setNewTournament] = useState({
-        tournament_name: "",
-        tier: "C",
-        region: "",
-        location: "",
-        date_start: "",
-        date_end: "",
-        prize_pool: "",
-        tournament_logo: "",
+        tourLogo: "",
+        tourName: "",
+        tourTier: "",
+        tourRegion: "",
+        tourLocation: "",
+        tourDates: "",
+        tourPrizePool: "",
     });
+
+    useEffect(() => {
+        if(selectedTier === "All"){
+            axios.get("http://localhost:8080/mlbb_tours")
+                .then(res => setTournaments(res.data))
+        } else {
+            axios.get(`http://localhost:8080/mlbb_tours/tier/${selectedTier}`)
+                .then(res => setTournaments(res.data))
+        }
+    }, [selectedTier]);
+
+    const handleTypeFilter = (tier) => {
+        setSelectedTier(tier);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewTournament({ ...newTournament, [name]: value });
     };
 
-    const handleLogoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setNewTournament({ ...newTournament, tournament_logo: imageURL });
-        }
-    };
-
     const handleAddTournament = () => {
-        if (
-            !newTournament.tournament_name ||
-            !newTournament.region ||
-            !newTournament.location ||
-            !newTournament.date_start ||
-            !newTournament.date_end ||
-            !newTournament.prize_pool
-        ) {
-            alert("Please fill in all required fields.");
-            return;
-        }
-
-        const newTournamentData = {
-            ...newTournament,
-            tournament_id: tournaments.length + 1,
-        };
-
-        setTournaments([...tournaments, newTournamentData]);
-        closeForm();
+        axios.post("http://localhost:8080/mlbb_tours", newTournament)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            });
     };
 
-    const handleEdit = (tournament_id) => {
-        const tournament = tournaments.find((t) => t.tournament_id === tournament_id);
-        if (tournament) {
-            setEditTournamentID(tournament_id);
+    const handleEdit = (id) => {
+        const tournament = tournaments.find((to) => to.id === id);
+            setEditTournamentID(id);
             setNewTournament(tournament);
             setIsEditing(true);
             setShowForm(true);
-        }
     };
 
     const handleUpdateTournament = () => {
-        setTournaments(
-            tournaments.map((t) =>
-                t.tournament_id === editTournamentID ? { ...t, ...newTournament } : t
-            )
-        );
-        closeForm();
+        axios.put(`http://localhost:8080/mlbb_tours/${editTournamentID}`, newTournament)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            });
     };
 
-    const handleRemove = (tournament_id) => {
-        setTournamentToDelete(tournament_id);
+    const handleRemove = (id) => {
+        setTournamentToDelete(id);
         setShowConfirmation(true);
     };
 
     const confirmRemove = () => {
-        setTournaments(tournaments.filter((t) => t.tournament_id !== tournamentToDelete));
-        setShowConfirmation(false);
-        setTournamentToDelete(null);
+        axios.delete(`http://localhost:8080/mlbb_tours/${tournamentToDelete}`)
+            .then(() => {
+                setShowConfirmation(false);
+                setTournamentToDelete(null);
+                window.location.reload();
+            });
     };
 
     const closeForm = () => {
         setShowForm(false);
         setIsEditing(false);
         setEditTournamentID(null);
+        resetForm();
+    };
+
+    const resetForm = () => {
         setNewTournament({
-            tournament_name: "",
-            tier: "C",
-            region: "",
-            location: "",
-            date_start: "",
-            date_end: "",
-            prize_pool: "",
-            tournament_logo: "",
+            tourLogo: "",
+            tourName: "",
+            tourTier: "",
+            tourRegion: "",
+            tourLocation: "",
+            tourDates: "",
+            tourPrizePool: "",
         });
     };
 
@@ -125,8 +111,8 @@ const MLBBToursBE = ({ theme }) => {
                     <button className="nav-btn" onClick={() => setShowForm(true)}>
                         Add Tournament +
                     </button>
-                    {["S", "A", "B", "C", "Q"].map((tier) => (
-                        <button key={tier} className="nav-btn">
+                    {["All", "S", "A", "B", "C", "Q"].map((tier) => (
+                        <button key={tier} className="nav-btn" onClick={() => handleTypeFilter(tier)}>
                             Tier {tier}
                         </button>
                     ))}
@@ -135,7 +121,7 @@ const MLBBToursBE = ({ theme }) => {
 
             {/* Main Content */}
             <main className="main-content">
-                <h1 className="region-title">Tournaments</h1>
+                <h1 className="region-title">Tournaments - {selectedTier}</h1>
             </main>
 
             {/* Table */}
@@ -164,12 +150,12 @@ const MLBBToursBE = ({ theme }) => {
                                 </tr>
                             ) : (
                                 tournaments.map((row) => (
-                                    <tr key={row.tournament_id}>
-                                        <td>{row.tournament_id}</td>
+                                    <tr key={row.id}>
+                                        <td>{row.id}</td>
                                         <td>
-                                            {row.tournament_logo ? (
+                                            {row.tourLogo ? (
                                                 <img
-                                                    src={row.tournament_logo}
+                                                    src={row.tourLogo}
                                                     alt="Tournament Logo"
                                                     className="team-icon"
                                                 />
@@ -177,24 +163,22 @@ const MLBBToursBE = ({ theme }) => {
                                                 "—"
                                             )}
                                         </td>
-                                        <td>{row.tournament_name}</td>
-                                        <td>{row.tier}</td>
-                                        <td>{row.region}</td>
-                                        <td>{row.location}</td>
-                                        <td>
-                                            {row.date_start} - {row.date_end}
-                                        </td>
-                                        <td>{row.prize_pool}</td>
+                                        <td>{row.tourName}</td>
+                                        <td>{row.tourTier}</td>
+                                        <td>{row.tourRegion}</td>
+                                        <td>{row.tourLocation}</td>
+                                        <td>{row.tourDates}</td>
+                                        <td>{row.tourPrizePool}</td>
                                         <td>
                                             <button
                                                 className="edit-btn"
-                                                onClick={() => handleEdit(row.tournament_id)}
+                                                onClick={() => handleEdit(row.id)}
                                             >
                                                 Edit
                                             </button>
                                             <button
                                                 className="remove-btn"
-                                                onClick={() => handleRemove(row.tournament_id)}
+                                                onClick={() => handleRemove(row.id)}
                                             >
                                                 Remove
                                             </button>
@@ -216,8 +200,8 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Tournament Name:</label>
                             <input
-                                name="tournament_name"
-                                value={newTournament.tournament_name}
+                                name="tourName"
+                                value={newTournament.tourName}
                                 onChange={handleChange}
                             />
                         </div>
@@ -225,13 +209,13 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Tier:</label>
                             <select
-                                name="tier"
-                                value={newTournament.tier}
+                                name="tourTier"
+                                value={newTournament.tourTier}
                                 onChange={handleChange}
                             >
-                                {["S", "A", "B", "C", "Q"].map((tier) => (
-                                    <option key={tier} value={tier}>
-                                        {tier}
+                                {["S", "A", "B", "C", "Q"].map((tourTier) => (
+                                    <option key={tourTier} value={tourTier}>
+                                        {tourTier}
                                     </option>
                                 ))}
                             </select>
@@ -240,8 +224,8 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Region:</label>
                             <input
-                                name="region"
-                                value={newTournament.region}
+                                name="tourRegion"
+                                value={newTournament.tourRegion}
                                 onChange={handleChange}
                             />
                         </div>
@@ -249,8 +233,8 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Location:</label>
                             <input
-                                name="location"
-                                value={newTournament.location}
+                                name="tourLocation"
+                                value={newTournament.tourLocation}
                                 onChange={handleChange}
                             />
                         </div>
@@ -258,19 +242,8 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Date Start:</label>
                             <input
-                                type="date"
-                                name="date_start"
-                                value={newTournament.date_start}
-                                onChange={handleChange}
-                            />
-                        </div>
-
-                        <div className="form-group">
-                            <label>Date End:</label>
-                            <input
-                                type="date"
-                                name="date_end"
-                                value={newTournament.date_end}
+                                name="tourDates"
+                                value={newTournament.tourDates}
                                 onChange={handleChange}
                             />
                         </div>
@@ -278,8 +251,8 @@ const MLBBToursBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Prize Pool:</label>
                             <input
-                                name="prize_pool"
-                                value={newTournament.prize_pool}
+                                name="tourPrizePool"
+                                value={newTournament.tourPrizePool}
                                 onChange={handleChange}
                                 placeholder="$500,000"
                             />
@@ -287,10 +260,14 @@ const MLBBToursBE = ({ theme }) => {
 
                         <div className="form-group">
                             <label>Tournament Logo:</label>
-                            <input type="file" accept="image/*" onChange={handleLogoChange} />
-                            {newTournament.tournament_logo && (
+                            <input 
+                                name="tourLogo"
+                                value={newTournament.tourLogo}
+                                onChange={handleChange}
+                            />
+                            {newTournament.tourLogo && (
                                 <div className="logo-preview">
-                                    <img src={newTournament.tournament_logo} alt="Preview" />
+                                    <img src={newTournament.tourLogo} alt="Preview" />
                                 </div>
                             )}
                         </div>

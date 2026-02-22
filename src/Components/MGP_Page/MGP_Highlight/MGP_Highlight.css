@@ -1,0 +1,97 @@
+.HI_highlight-section {
+  text-align: center;
+  padding: 20px;
+  position: relative;
+}
+
+.HI_highlight-header {
+  margin-bottom: 15px;
+}
+
+/* Light mode */
+.HI_highlight-text {
+  color: #000;
+}
+
+/* Dark mode */
+.dark .HI_highlight-text {
+  color: #fff;
+}
+
+/* Wrapper */
+.HI_highlight-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Scroll container */
+.HI_scrollContainer {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 5px;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+.HI_scrollContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Scroll buttons */
+.HI_scroll-button {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  font-size: 2rem;
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 5px 10px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: 0.3s;
+  z-index: 5;
+}
+
+.HI_scroll-button:hover {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.HI_scroll-button.HI_left {
+  left: 0;
+}
+
+.HI_scroll-button.HI_right {
+  right: 0;
+}
+
+/* Card */
+.HI_card {
+  min-width: 290px;
+  flex-shrink: 0;
+  background-color: #11111100;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.HI_card:hover {
+  transform: scale(1.05);
+}
+
+.HI_card img {
+  width: 100%;
+  height: 170px;
+  object-fit: cover;
+}
+
+.HI_cardLabel {
+  color: rgba(255, 255, 255, 0);
+  font-weight: 500;
+  font-size: 1rem;
+  padding: 10px;
+}

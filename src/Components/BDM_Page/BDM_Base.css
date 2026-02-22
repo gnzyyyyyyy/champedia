@@ -1,0 +1,44 @@
+.bdm-base {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background: #0b0d24;
+  color: white;
+}
+
+.bdm-title {
+  font-size: 40px;
+  margin-bottom: 40px;
+}
+
+.bdm-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.bdm-card {
+  background: #101225;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.bdm-card:hover {
+  transform: translateY(-6px);
+}
+
+.bdm-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+}
+
+.bdm-card span {
+  display: block;
+  background: #cba468;
+  color: black;
+  text-align: center;
+  padding: 14px;
+  font-weight: bold;
+}

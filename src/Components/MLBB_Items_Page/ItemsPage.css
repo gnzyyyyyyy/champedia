@@ -106,6 +106,42 @@
   text-shadow: 0 0 2px #000;
 }
 
+.item-popup {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(10, 0, 47, 0.97);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 1rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  overflow-y: auto;
+}
+
+.team-card:hover .item-popup {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Title inside hover */
+.item-popup h4 {
+  color: #cba468;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  text-align: center;
+  text-shadow: 0 0 3px #000;
+}
+
+.item-popup p {
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  text-align: center;
+  text-shadow: 0 0 3px #000;
+}
 /* Footer */
 .footer {
   background-color: rgba(172, 100, 0, 0.3);

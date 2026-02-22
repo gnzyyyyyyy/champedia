@@ -1,0 +1,100 @@
+/* === MGP_circuitsOption.css === */
+
+/* Container Grid */
+.CO_circuitsOption_container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  justify-items: center;
+  align-items: start;
+  padding: 20px 40px;
+  overflow: hidden;
+}
+
+/* Individual Card */
+.CO_circuitsOption_card {
+  position: relative;
+  width: 100%;
+  max-width: 280px;
+  height: 360px;
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #111;
+}
+
+.CO_circuitsOption_card img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background-color: #000;
+}
+
+/* Hover Effect */
+.CO_circuitsOption_card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+}
+
+/* Label */
+.CO_circuitsOption_cardLabel {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #c6a664;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+  padding: 10px 0;
+  font-size: 1.2rem;
+}
+
+/* Category Buttons */
+.CO_categories {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 30px 0 25px 0;
+}
+
+.CO_category_button {
+  background-color: #e6e6e6;
+  color: #222;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 28px;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.CO_category_button:hover {
+  background-color: #c6a664;
+  color: white;
+}
+
+.CO_category_button.active {
+  background-color: #c6a664;
+  color: white;
+  font-weight: 700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.4);
+}
+
+/* Responsive Fix */
+@media (max-width: 768px) {
+  .CO_circuitsOption_container {
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 15px;
+  }
+
+  .CO_circuitsOption_card {
+    height: 280px;
+  }
+
+  .CO_circuitsOption_cardLabel {
+    font-size: 1rem;
+  }
+}

@@ -1,0 +1,168 @@
+/* === Base === */
+.pubg-patches {
+  color: #fff;
+  font-family: "Inter", sans-serif;
+  min-height: 100vh;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+/* === Header === */
+.patches-header {
+  background-color: #0a002f;
+  border-bottom: 3px solid #955e10;
+  padding: 1rem 0;
+}
+
+.patches-header-logo {
+  height: 100px;
+  object-fit: contain;
+}
+
+/* === Overview Section === */
+.patches-overview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+}
+
+.patches-title {
+  font-size: 2rem;
+  color: #cba468;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 0 4px #000;
+}
+
+.patches-overview-box {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 2px solid #955e10;
+  border-radius: 15px;
+  padding: 1.5rem 2rem;
+  box-shadow: 0 0 10px rgba(149, 94, 16, 0.3);
+  max-width: 800px; /* centers width and prevents stretching when zoomed out */
+  width: 100%;
+  text-align: left;
+}
+
+.patches-overview-box p {
+  color: #ffffff;
+  margin: 0.5rem 0;
+  font-size: 1rem;
+}
+
+.patches-overview-box strong {
+  color: #cba468;
+}
+
+.patches-overview-box ul {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.patches-overview-box li {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-left: 4px solid #cba468;
+  padding: 10px 14px;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.patches-overview-box li:hover {
+  background-color: rgba(203, 164, 104, 0.15);
+  transform: translateX(5px);
+}
+
+/* === Main Title === */
+.patches-main {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.patches-main-title {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 4px #000;
+  color: #fff;
+}
+
+/* === Table Section === */
+.patches-table-section {
+  margin-top: 3rem;
+}
+
+.patches-table-wrapper {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  overflow-x: auto;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+.patches-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid #955e10;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.patches-table th,
+.patches-table td {
+  border: 1px solid #955e10;
+  padding: 10px 12px;
+  text-align: center;
+  white-space: pre-wrap;
+}
+
+.patches-table th {
+  background-color: #955e10;
+  color: #000;
+  font-weight: 700;
+}
+
+.patches-table tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.patches-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+  .patches-title {
+    font-size: 1.75rem;
+  }
+
+  .patches-overview-box {
+    padding: 1rem 1.25rem;
+  }
+
+  .patches-table th,
+  .patches-table td {
+    font-size: 0.9rem;
+    padding: 8px;
+  }
+}
+
+@media (max-width: 500px) {
+  .patches-table th,
+  .patches-table td {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+}

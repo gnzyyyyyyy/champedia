@@ -1,0 +1,35 @@
+.chess-table-page {
+  padding: 40px 60px;
+  background: #0b0d24;
+  min-height: 100vh;
+  color: white;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #101225;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #cba468;
+  color: black;
+}
+
+.table th,
+.table td {
+  padding: 14px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.status.upcoming {
+  color: #4c8bf5;
+  font-weight: 600;
+}
+
+.status.past {
+  color: #aaa;
+}

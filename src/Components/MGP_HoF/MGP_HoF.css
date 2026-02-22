@@ -1,0 +1,138 @@
+.HF_mgpHof {
+  width: 100%;
+  height: 836px;
+  position: relative;
+  background-color: #02001d;
+  font-family: Inter, sans-serif;
+  overflow: hidden;
+}
+
+/* Title */
+.HF_hallOfFame {
+  position: absolute;
+  top: 75px;
+  left: 254px;
+  font-size: 96px;
+  letter-spacing: -0.02em;
+  line-height: 120%;
+  color: #fff;
+  width: 931px;
+  height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Cards Container */
+.HF_teamsParent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 836px;
+}
+
+/* Card */
+.HF_teamsCard {
+  position: absolute;
+  top: 331px;
+  border-radius: 20px;
+  background-color: #393939;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  width: 322px;
+  height: 409px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* Unique card positions */
+.HF_teams0 { left: 25px; }
+.HF_teams1 { left: 380px; }
+.HF_teams2 { left: 735px; }
+.HF_teams3 { left: 1087px; }
+
+/* Main rider image */
+.HF_mainImage {
+  position: absolute;
+  top: -9px;
+  left: -78px;
+  width: 477px;
+  height: 430px;
+  object-fit: cover;
+}
+
+/* Sliding bottom info */
+.HF_slidingImage {
+  position: absolute;
+  top: 289px;
+  left: 0;
+  width: 322px;
+  height: 120px;
+  background-color: #d0a25c;
+  border-radius: 0 0 20px 20px;
+  box-shadow: 0 4px 4px rgba(0,0,0,0.25);
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Rider icon */
+.HF_riderIcon {
+  position: absolute;
+  top: 72px;
+  left: 17px;
+  width: 42px;
+  height: 28px;
+  object-fit: cover;
+}
+
+/* Rider name */
+.HF_riderName {
+  position: absolute;
+  top: 0;
+  left: 17px;
+  font-size: 32px;
+  letter-spacing: -0.02em;
+  line-height: 120%;
+  display: flex;
+  align-items: center;
+  width: 293px;
+  height: 75px;
+}
+
+/* Divider */
+.HF_line {
+  position: absolute;
+  top: 63.01px;
+  left: 71.82px;
+  width: 46.4px;
+  height: 4.7px;
+  background-color: #000;
+  transform: rotate(90.1deg);
+  transform-origin: 0 0;
+}
+
+/* Years Active */
+.HF_yearsActive {
+  position: absolute;
+  top: 48px;
+  left: 84px;
+  line-height: 120%;
+  width: 99px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+}
+
+/* Years range */
+.HF_years {
+  position: absolute;
+  top: 48px;
+  left: 191px;
+  line-height: 120%;
+  width: 99px;
+  height: 75px;
+  display: flex;
+  align-items: center;
+}

@@ -1,0 +1,94 @@
+.CHM_championship {
+  padding: 20px;
+  text-align: center;
+}
+
+/* Categories */
+.CHM_categories {
+  margin-bottom: 15px;
+}
+
+.CHM_category_button {
+  background-color: transparent;
+  border: 2px solid #555;
+  color: #333;
+  padding: 8px 14px;
+  margin: 0 6px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.CHM_category_button:hover {
+  background-color: #ddd;
+}
+
+.CHM_category_button.CHM_active {
+  background-color: #222;
+  color: #fff;
+  border-color: #222;
+}
+
+/* Table */
+.CHM_table_wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+  overflow-x: auto;
+}
+
+.CHM_championship_table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.CHM_championship_table th,
+.CHM_championship_table td {
+  border: 1px solid #ccc;
+  padding: 10px 10px 0 10px;
+}
+
+.CHM_championship_table td {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.CHM_championship_table th {
+  background-color: #aa9510;
+  font-weight: 600;
+}
+
+/* Rider cell (future ready) */
+.CHM_rider_photo {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+}
+
+.CHM_rider_cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.CHM_rider_name {
+  font-weight: 500;
+  font-size: 20px;
+}
+
+/* Fade animation */
+.CHM_fade {
+  animation: CHM_fadeIn 0.4s ease-in-out;
+}
+
+@keyframes CHM_fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

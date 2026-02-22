@@ -1,17 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MLBBHeroesBE.css";
-
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
 const MLBBHeroesBE = ({ theme }) => {
-    const [heroes, setHeroes] = useState([
-        {
-            hero_id: 1,
-            hero_name: "Gusion",
-            hero_role: "Assassin",
-            hero_description: "A fast burst assassin who excels in mobility and high damage.",
-        },
-    ]);
+    const [heroes, setHeroes] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -19,11 +12,29 @@ const MLBBHeroesBE = ({ theme }) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [heroToDelete, setHeroToDelete] = useState(null);
 
+    const [selectedRole, setSelectedRole] = useState("All");
+
     const [newHero, setNewHero] = useState({
-        hero_name: "",
-        hero_role: "",
-        hero_description: "",
+        heroName: "",
+        heroRole: "",
+        heroDescription: "",
+        heroImages: "",
     });
+
+    //Load heroes from backend
+    useEffect(() => {
+        if(selectedRole === "All"){
+            axios.get("http://localhost:8080/mlbb_heroes")
+                .then(res => setHeroes(res.data))
+        } else {
+            axios.get(`http://localhost:8080/mlbb_heroes/role/${selectedRole}`)
+                .then(res => setHeroes(res.data))
+        } 
+    }, [selectedRole]);
+
+    const handleRoleFilter = (role) => {
+        setSelectedRole(role);
+    };
 
     // Handle form inputs
     const handleChange = (e) => {
@@ -31,64 +42,56 @@ const MLBBHeroesBE = ({ theme }) => {
         setNewHero({ ...newHero, [name]: value });
     };
 
-    // Handle image upload
-    const handleHeroImageChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setNewHero({ ...newHero, hero_image: imageURL });
-        }
-    };
-
     // Add new hero
     const handleAddHero = () => {
-        if (!newHero.hero_name || !newHero.hero_role || !newHero.hero_description) {
-            alert("Please fill in all required fields.");
-            return;
-        }
-
-        const newHeroData = {
-            ...newHero,
-            hero_id: heroes.length + 1,
-        };
-
-        setHeroes([...heroes, newHeroData]);
-        setShowForm(false);
-        resetForm();
+        axios.post("http://localhost:8080/mlbb_heroes", newHero)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            })
+            .catch(err => {
+                if (err.response && err.response.status === 409) {
+                    alert(err.response.data);
+                } else {
+                    alert("An error occurred while adding the hero.");
+                }
+            });
     };
 
     // Edit hero
-    const handleEdit = (hero_id) => {
-        const hero = heroes.find((h) => h.hero_id === hero_id);
-        if (hero) {
-            setEditHeroID(hero_id);
-            setNewHero(hero);
-            setIsEditing(true);
-            setShowForm(true);
-        }
+    const handleEdit = (id) => {
+        const hero = heroes.find(h => h.id === id);
+        setEditHeroID(id);
+        setNewHero(hero);
+        setIsEditing(true);
+        setShowForm(true);
     };
 
     // Update hero
     const handleUpdateHero = () => {
-        setHeroes(
-            heroes.map((h) =>
-                h.hero_id === editHeroID ? { ...h, ...newHero } : h
-            )
-        );
-        closeForm();
+        axios.put(`http://localhost:8080/mlbb_heroes/${editHeroID}`, newHero)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            });
     };
 
     // Remove hero
-    const handleRemove = (hero_id) => {
-        setHeroToDelete(hero_id);
+    const handleRemove = (id) => {
+        setHeroToDelete(id);
         setShowConfirmation(true);
     };
 
     // Confirm remove
     const confirmRemove = () => {
-        setHeroes(heroes.filter((h) => h.hero_id !== heroToDelete));
-        setShowConfirmation(false);
-        setHeroToDelete(null);
+        axios.delete(`http://localhost:8080/mlbb_heroes/${heroToDelete}`)
+            .then(() => {
+                setShowConfirmation(false);
+                setHeroToDelete(null);
+                window.location.reload();
+            });
     };
 
     // Close and reset
@@ -101,10 +104,10 @@ const MLBBHeroesBE = ({ theme }) => {
 
     const resetForm = () => {
         setNewHero({
-            hero_name: "",
-            hero_role: "",
-            hero_description: "",
-            hero_image: "",
+            heroName: "",
+            heroRole: "",
+            heroDescription: "",
+            heroImages: "",
         });
     };
 
@@ -118,7 +121,7 @@ const MLBBHeroesBE = ({ theme }) => {
                         Add Hero +
                     </button>
                     {["All", "Assassin", "Fighter", "Mage", "Marksman", "Tank", "Support"].map((role) => (
-                        <button key={role} className="nav-btn">
+                        <button key={role} className="nav-btn" onClick={() => handleRoleFilter(role)}>
                             {role}
                         </button>
                     ))}
@@ -127,7 +130,7 @@ const MLBBHeroesBE = ({ theme }) => {
 
             {/* Main Content */}
             <main className="main-content">
-                <h1 className="region-title">Heroes</h1>
+                <h1 className="region-title">Heroes - {selectedRole}</h1>
             </main>
 
             {/* Table */}
@@ -152,30 +155,30 @@ const MLBBHeroesBE = ({ theme }) => {
                                 </tr>
                             ) : (
                                 heroes.map((row) => (
-                                    <tr key={row.hero_id}>
-                                        <td>{row.hero_id}</td>
+                                    <tr key={row.id}>
+                                        <td>{row.id}</td>
                                         <td>
                                             <div className="team-cell">
                                             <img
-                                            src={row.hero_image}
-                                            alt={row.hero_name}
+                                            src={row.heroImages}
+                                            alt={row.heroName}
                                             className="team-icon"
                                             />
-                                            <span>{row.hero_name}</span>
+                                            <span>{row.heroName}</span>
                                         </div>
                                         </td>
-                                        <td>{row.hero_role}</td>
-                                        <td>{row.hero_description}</td>
+                                        <td>{row.heroRole}</td>
+                                        <td className="desc-cell">{row.heroDescription}</td>
                                         <td>
                                             <button
                                                 className="edit-btn"
-                                                onClick={() => handleEdit(row.hero_id)}
+                                                onClick={() => handleEdit(row.id)}
                                             >
                                                 Edit
                                             </button>
                                             <button
                                                 className="remove-btn"
-                                                onClick={() => handleRemove(row.hero_id)}
+                                                onClick={() => handleRemove(row.id)}
                                             >
                                                 Remove
                                             </button>
@@ -191,14 +194,20 @@ const MLBBHeroesBE = ({ theme }) => {
             {/* Add/Edit Modal */}
             {showForm && (
                 <div className="modal-overlay">
-                    <div className="modal-content">
+                    <form
+                        className="modal-content"
+                        onSubmit={(e) => {
+                            e.preventDefault();
+                            isEditing ? handleUpdateHero() : handleAddHero();
+                        }}
+                        >
                         <h2>{isEditing ? "Edit Hero" : "Add New Hero"}</h2>
 
                         <div className="form-group">
                             <label>Hero Name:</label>
                             <input
-                                name="hero_name"
-                                value={newHero.hero_name}
+                                name="heroName" required 
+                                value={newHero.heroName}
                                 onChange={handleChange}
                             />
                         </div>
@@ -206,8 +215,8 @@ const MLBBHeroesBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Role:</label>
                             <select
-                                name="hero_role"
-                                value={newHero.hero_role}
+                                name="heroRole" required 
+                                value={newHero.heroRole}
                                 onChange={handleChange}
                             >
                                 <option value="">Select Role</option>
@@ -223,8 +232,8 @@ const MLBBHeroesBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Description:</label>
                             <textarea
-                                name="hero_description"
-                                value={newHero.hero_description}
+                                name="heroDescription"  required 
+                                value={newHero.heroDescription}
                                 onChange={handleChange}
                             />
                         </div>
@@ -232,21 +241,20 @@ const MLBBHeroesBE = ({ theme }) => {
                         <div className="form-group">
                             <label>Hero Image:</label>
                             <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleHeroImageChange}
+                                name="heroImages" required 
+                                value={newHero.heroImages}
+                                onChange={handleChange}
                             />
-                            {newHero.hero_image && (
+                            {newHero.heroImages && (
                                 <div className="image-preview">
-                                    <img src={newHero.hero_image} alt="Preview" />
+                                    <img src={newHero.heroImages} alt="Preview" className="preview-image" />
                                 </div>
                             )}
                         </div>
 
                         <div className="modal-actions">
                             <button
-                                className="add-btn"
-                                onClick={isEditing ? handleUpdateHero : handleAddHero}
+                                className="add-btn" type = "submit"
                             >
                                 {isEditing ? "Update" : "Add"}
                             </button>
@@ -254,7 +262,7 @@ const MLBBHeroesBE = ({ theme }) => {
                                 Cancel
                             </button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             )}
 

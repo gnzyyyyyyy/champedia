@@ -1,0 +1,169 @@
+/* ======================================
+   THEME VARIABLES
+====================================== */
+.eq-dark {
+  --bg: #070722;
+  --text: #ffffff;
+  --card-bg: #101225;
+  --gold: #cba468;
+  --border: #ffffff30;
+}
+
+.eq-light {
+  --bg: #ffffff;
+  --text: #000000;
+  --card-bg: #f4f4f4;
+  --gold: #cba468;
+  --border: #00000020;
+}
+
+/* ======================================
+   PAGE WRAPPER
+====================================== */
+.eq-teams-page {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* PAGE TITLE */
+.eq-page-title {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* ======================================
+   ADD BUTTON
+====================================== */
+.eq-add-btn {
+  padding: 10px 18px;
+  background-color: var(--gold);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.eq-add-btn:hover {
+  opacity: 0.eq-85;
+}
+
+/* ======================================
+   TABLE
+====================================== */
+.eq-data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.eq-data-table thead {
+  background-color: var(--gold);
+  color: white;
+}
+
+.eq-data-table th,
+.eq-data-table td {
+  padding: 14px 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.eq-data-table tbody tr:hover {
+  background-color: #ffffff10;
+}
+
+/* ======================================
+   ACTION BUTTONS
+====================================== */
+.eq-edit-btn,
+.eq-remove-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin: 0 4px;
+}
+
+.eq-edit-btn {
+  background-color: #4c8bf5;
+  color: white;
+}
+
+.eq-remove-btn {
+  background-color: #d9534f;
+  color: white;
+}
+
+.eq-edit-btn:hover,
+.eq-remove-btn:hover {
+  opacity: 0.eq-85;
+}
+
+/* ======================================
+   MODAL
+====================================== */
+.eq-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: #00000070;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.eq-modal-content {
+  width: 100%;
+  max-width: 450px;
+  background-color: var(--card-bg);
+  padding: 26px;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.eq-modal-content h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* INPUTS */
+.eq-modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+/* ======================================
+   MODAL ACTIONS
+====================================== */
+.eq-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+}
+
+.eq-back-btn {
+  padding: 10px 18px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.eq-back-btn:hover {
+  opacity: 0.eq-85;
+}

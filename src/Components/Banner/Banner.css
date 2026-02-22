@@ -7,17 +7,16 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  overflow: visible;
   padding: 20px;
 }
 
+/* Title */
 .banner .the-encyclopedia-of {
   color: transparent;
   font-family: "Inter-Bold", Helvetica;
   font-size: clamp(32px, 5vw, 59px);
   font-weight: 700;
-  letter-spacing: -1.18px;
-  line-height: 1.2;
   text-align: center;
   margin-top: 60px;
   margin-bottom: 40px;
@@ -38,8 +37,8 @@
   color: #c9924a;
 }
 
+/* Sliding Image */
 .banner .sliding-image {
-  height: auto;
   width: 100%;
   max-width: 1273px;
   max-height: 264px;
@@ -47,7 +46,9 @@
   margin-bottom: 40px;
 }
 
+/* Search Wrapper */
 .banner .search-container {
+  position: relative;
   display: flex;
   gap: 10px;
   align-items: center;
@@ -58,13 +59,14 @@
   margin-bottom: 40px;
 }
 
+/* Search Bar */
 .banner .search-bar {
   background-color: rgba(5, 5, 5, 0.8);
   border: 2px solid #6c450e;
   border-radius: 8px;
+  height: 60px;
   display: flex;
   align-items: center;
-  height: 60px;
   flex: 1;
   max-width: 900px;
   padding: 0 25px;
@@ -91,18 +93,9 @@
   font-size: 20px;
 }
 
-.banner .div {
-  color: #5d4040;
-  font-family: "Inter-Bold", Helvetica;
-  font-size: 40px;
-  font-weight: 700;
-  letter-spacing: -0.80px;
-  user-select: none;
-}
-
+/* Search Button */
 .banner .search-button {
   all: unset;
-  box-sizing: border-box;
   background-color: #6c450e;
   border: 1px solid #6c450e;
   border-radius: 8px;
@@ -134,127 +127,83 @@
   white-space: nowrap;
 }
 
-/* Responsive breakpoints */
-@media (max-width: 1024px) {
-  .banner {
-    min-height: 600px;
-    padding: 15px;
-  }
-
-  .banner .the-encyclopedia-of {
-    margin-top: 40px;
-    margin-bottom: 30px;
-  }
-
-  .banner .sliding-image {
-    max-height: 200px;
-    margin-bottom: 30px;
-  }
-
-  .banner .search-container {
-    max-width: 90%;
-  }
-
-  .banner .search-bar {
-    height: 55px;
-    padding: 0 20px;
-  }
-
-  .banner .search-button {
-    height: 55px;
-    padding: 0 30px;
-  }
+/* Search Results Dropdown */
+.banner .search-results {
+  position: absolute;
+  top: 620px; /* directly below the search bar */
+  left: 44.5%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  background: rgba(5, 5, 5, 0.95);
+  border: 2px solid #6c450e;
+  border-radius: 8px;
+  max-height: 250px;
+  overflow-y: auto;
+  z-index: 200;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  animation: dropdownFade 0.2s ease-out;
 }
 
+@keyframes dropdownFade {
+  from { opacity: 0; transform: translate(-50%, -5px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* Result Item */
+.banner .search-result-item {
+  padding: 14px 20px;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: "Inter-Regular", Helvetica;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.banner .search-result-item:hover {
+  background: rgba(148, 93, 16, 0.35);
+  padding-left: 28px;
+}
+
+.banner .type-label {
+  font-size: 12px;
+  opacity: 0.6;
+  color: #d4a855;
+  font-weight: 600;
+}
+
+/* ============================ */
+/* Responsive Adjustments */
+/* ============================ */
+
 @media (max-width: 768px) {
-  .banner {
-    min-height: 500px;
-    padding: 15px;
-  }
-
-  .banner .the-encyclopedia-of {
-    margin-top: 30px;
-    margin-bottom: 25px;
-    padding: 0 15px;
-  }
-
-  .banner .sliding-image {
-    max-height: 150px;
-    margin-bottom: 25px;
-  }
-
   .banner .search-container {
     flex-direction: column;
     gap: 15px;
-    max-width: 100%;
   }
 
-  .banner .search-bar {
-    height: 50px;
-    max-width: 100%;
+  .banner .search-results {
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
     width: 100%;
-  }
-
-  .banner .search-bar input {
-    font-size: 16px;
-  }
-
-  .banner .search-bar input::placeholder {
-    font-size: 18px;
-  }
-
-  .banner .search-button {
-    height: 50px;
-    width: 100%;
+    margin-top: -5px;
     max-width: 100%;
-  }
-
-  .banner .div {
-    font-size: 32px;
   }
 }
 
 @media (max-width: 480px) {
-  .banner {
-    min-height: 450px;
-    padding: 10px;
-  }
-
-  .banner .the-encyclopedia-of {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    padding: 0 10px;
-  }
-
-  .banner .sliding-image {
-    max-height: 120px;
-    margin-bottom: 20px;
-  }
-
-  .banner .search-container {
-    gap: 12px;
-    padding: 0 10px;
-  }
-
-  .banner .search-bar {
-    height: 48px;
-    padding: 0 15px;
-  }
-
-  .banner .search-bar input {
+  .banner .search-result-item {
+    padding: 12px 15px;
     font-size: 14px;
   }
 
-  .banner .search-bar input::placeholder {
-    font-size: 16px;
-  }
-
-  .banner .search-button {
-    height: 48px;
-    padding: 0 25px;
-  }
-
-  .banner .div {
-    font-size: 28px;
+  .banner .type-label {
+    font-size: 11px;
   }
 }

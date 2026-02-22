@@ -1,0 +1,149 @@
+.COD_circuitDetails {
+  width: 100%;
+  height: 836px;
+  position: relative;
+  background-color: #02001d;
+  overflow: hidden;
+  text-align: left;
+  font-size: 22px;
+  color: #fff;
+  font-family: Inter, sans-serif;
+}
+
+/* prefix: COD_circuitDetails__ */
+.COD_circuitDetails__circuitRecordsParent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1440px;
+  height: 836px;
+  overflow: hidden;
+  font-size: 48px;
+}
+
+.COD_circuitDetails__circuitRecords {
+  position: absolute;
+  top: 50px;
+  left: 47px;
+}
+
+.COD_circuitDetails__portimao {
+  position: absolute;
+  top: 123px;
+  left: 934px;
+}
+
+.COD_circuitDetails__mostWins {
+  position: absolute;
+  top: 161px;
+  left: 47px;
+  font-size: 40px;
+}
+
+.COD_circuitDetails__mostPoles {
+  position: absolute;
+  top: 326px;
+  left: 47px;
+  font-size: 40px;
+}
+
+.COD_circuitDetails__image3Parent,
+.COD_circuitDetails__image3Group {
+  position: absolute;
+  background-color: #2b2b2b;
+  width: 433px;
+  height: 71px;
+  overflow: hidden;
+  font-size: 24px;
+}
+
+.COD_circuitDetails__image3Parent {
+  top: 232px;
+  left: 47px;
+}
+
+.COD_circuitDetails__image3Group {
+  top: 397px;
+  left: 47px;
+}
+
+.COD_circuitDetails__jorgeMartin {
+  position: absolute;
+  top: 21px;
+  left: 97px;
+}
+
+/* ------- STATS BOX ------- */
+.COD_circuitDetails__lineParent,
+.COD_circuitDetails__lineGroup,
+.COD_circuitDetails__lineContainer,
+.COD_circuitDetails__frameDiv {
+  position: relative;
+  border-radius: 22px;
+  background-color: #2b2b2b;
+  width: 260px;
+  height: 150px;
+  overflow: hidden;
+}
+
+.COD_circuitDetails__line {
+  position: absolute;
+  top: 23px;
+  left: 40px;
+  background-color: #fff;
+  width: 100px;
+  height: 7px;
+  transform: rotate(90deg);
+  transform-origin: 0 0;
+}
+
+.COD_circuitDetails__bestPole {
+  position: absolute;
+  top: 23px;
+  left: 45px;
+}
+
+.COD_circuitDetails__valueBig {
+  position: absolute;
+  top: 63px;
+  left: 45px;
+  font-size: 48px;
+}
+
+.COD_circuitDetails__kmh {
+  position: absolute;
+  top: 73px;
+  left: 45px;
+  font-size: 38px;
+}
+
+.COD_circuitDetails__corners {
+  position: absolute;
+  top: 50px;
+  left: 45px;
+  font-size: 80px;
+}
+
+.COD_circuitDetails__statsWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 34px;
+  width: 100%;
+  position: absolute;
+  bottom: 95px;
+  left: 0;
+}
+
+/* THEME */
+.COD_circuitDetails {
+  --bg: #02001d;
+  --card: #2b2b2b;
+  --text: #ffffff;
+}
+
+.COD_circuitDetails.light {
+  --bg: #ffffff;
+  --card: #f2f2f2;
+  --text: #000000;
+}

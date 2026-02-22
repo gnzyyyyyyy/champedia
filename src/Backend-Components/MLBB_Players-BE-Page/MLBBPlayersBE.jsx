@@ -1,11 +1,10 @@
-import react, { useState } from "react";
+import react, { useState, useEffect, use} from "react";
+import axios from "axios";
 import "./MLBBPlayersBE.css";
-
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
 const MLBBPlayersBE = ({theme}) => {
-    const [ players, setPlayers ] = useState([
-    ]);
+    const [ players, setPlayers ] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -13,87 +12,129 @@ const MLBBPlayersBE = ({theme}) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [playerToDelete, setPlayerToDelete] = useState(null);
 
+    const [selectedRegion, setSelectedRegion] = useState("All");
+
+    const [teams, setTeams] = useState([]);
+    const [errorMessage, setErrorMessage] = useState("");
+
     const [newPlayer, setNewPlayer] = useState({
-        in_game_name: "",
-        real_name: "",
-        role: "",
-        country: "",
+        playerIGN: "",
+        playerName: "",
+        playerRole: "",
+        playerRegion: "",
+        playerCountry: "",
         country_flag: "",
-        team_id: 1,
+        teamID: "",
     });
+
+    useEffect(() => {
+        if(selectedRegion === "All") {
+            axios.get("http://localhost:8080/mlbb_players")
+                .then(res => setPlayers(res.data))
+        } else {
+            axios.get(`http://localhost:8080/mlbb_players/region/${selectedRegion}`)
+                .then(res => setPlayers(res.data))
+        }
+    }, [selectedRegion]);
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/mlbb_teams")
+            .then(res => setTeams(res.data))
+    }, []);
+
+    const handleRegionFilter = (region) => {
+        setSelectedRegion(region);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewPlayer({ ...newPlayer, [name]: value }); 
     };
 
-    const handleFlagChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setNewPlayer({ ...newPlayer, country_flag: imageURL });
-        }
-    };
-
     const handleAddPlayer = () => {
-        if (!newPlayer.in_game_name || !newPlayer.real_name || !newPlayer.role || !newPlayer.country) {
-            alert("Please fill in all required fields.");
-            return;
-        }
-
-        const newPlayerData = {
-            ...newPlayer,
-            player_id: players.length + 1,
-        };
-
-        setPlayers([...players, newPlayerData]);
-        setShowForm(false);
+        axios
+            .post("http://localhost:8080/mlbb_players", newPlayer)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            })
+            .catch(err => {
+                if (err.response && err.response.status === 400) {
+                    setErrorMessage(err.response.data);
+                } else {
+                    console.error(err);
+                }
+            })
     };
 
-    const handleEdit = (player_id) => {
-        const player = players.find((p) => p.player_id === player_id);
-        if (player) {
-            setEditPlayerID(player_id);
-            setNewPlayer(player);
-            setIsEditing(true);
-            setShowForm(true);
-        }
+    const handleEdit = (id) => {
+        setErrorMessage("");
+        const player = players.find(p => p.id === id);
+        setEditPlayerID(id);
+        setNewPlayer(player);
+        setIsEditing(true);
+        setShowForm(true);
     };
 
     const handleUpdatePlayer = () => {
-        setPlayers(
-            players.map((p) =>
-                p.player_id === editPlayerID ? { ...p, ...newPlayer } : p
-            )
-        );
-        closeForm();
+        axios
+            .put(`http://localhost:8080/mlbb_players/${editPlayerID}`, newPlayer)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            })
+            .catch(err => {
+                if (err.response && err.response.status === 400) {
+                    setErrorMessage(err.response.data);
+                } else {
+                    console.error(err);
+                }
+            })
     };
 
-    const handleRemove = (player_id) => {
-        setPlayerToDelete(player_id);
+    const handleRemove = (id) => {
+        setPlayerToDelete(id);
         setShowConfirmation(true);
     };
 
     const confirmRemove = () => {
-        setPlayers(players.filter((p) => p.player_id !== playerToDelete));
-        setShowConfirmation(false);
-        setPlayerToDelete(null);
+        axios
+            .delete(`http://localhost:8080/mlbb_players/${playerToDelete}`)
+            .then(() => {
+                setShowConfirmation(false);
+                setPlayerToDelete(null);
+                window.location.reload();
+            })
     };
 
     const closeForm = () => {
         setShowForm(false);
         setIsEditing(false);
         setEditPlayerID(null);
+        resetForm();
+    };
+
+    const resetForm = () => {
         setNewPlayer({
-            in_game_name: "",
-            real_name: "",
-            role: "",
-            region: "",
-            country: "",
+            playerIGN: "",
+            playerName: "",
+            playerRole: "",
+            playerRegion: "",
+            playerCountry: "",
             country_flag: "",
-            team_id: 1,
+            teamID: "",
         });
     };
+
+    // < -- ADDITION --> //
+    
+    const getTeamInfo = (teamID) => {
+        const team = teams.find(t => t.id === teamID);
+        if (!team) return { name: "No Team", country: "" };
+        return { name: team.teamName, country: team.teamCountry };
+    }
 
 
     return (
@@ -106,8 +147,8 @@ const MLBBPlayersBE = ({theme}) => {
                 <button className="nav-btn" onClick={() => setShowForm(true)}>
                     Add Player +
                 </button>
-                {["SEA", "Asia", "EMEA", "South America", "North America", "China", "All"].map((region) => (
-                    <button key={region} className="nav-btn">
+                {["SEA", "Brazil", "MENA", "All"].map((region) => (
+                    <button key={region} className="nav-btn" onClick={() => handleRegionFilter(region)}>
                         {region}
                     </button>
                 ))}
@@ -116,7 +157,7 @@ const MLBBPlayersBE = ({theme}) => {
 
             {/* Main Content */}
             <main className="main-content">
-                <h1 className="region-title">Players Database</h1>
+                <h1 className="region-title">Players Database - {selectedRegion}</h1>
             </main>
 
             {/* Table */}
@@ -129,6 +170,7 @@ const MLBBPlayersBE = ({theme}) => {
                             <th>In-Game Name</th>
                             <th>Real Name</th>
                             <th>Role</th>
+                            <th>Region</th>
                             <th>Country</th>
                             <th>Team ID</th>
                             {players.length > 0 && <th>Actions</th>}
@@ -143,11 +185,12 @@ const MLBBPlayersBE = ({theme}) => {
                             </tr>
                         ) : (
                             players.map((row) => (
-                            <tr key={row.player_id}>
-                                <td>{row.player_id}</td>
-                                <td>{row.in_game_name}</td>
-                                <td>{row.real_name}</td>
-                                <td>{row.role}</td>
+                            <tr key={row.id}>
+                                <td>{row.id}</td>
+                                <td>{row.playerIGN}</td>
+                                <td>{row.playerName}</td>
+                                <td>{row.playerRole}</td>
+                                <td>{row.playerRegion}</td>
                                 <td>
                                 <div className="team-cell">
                                     <img
@@ -155,20 +198,24 @@ const MLBBPlayersBE = ({theme}) => {
                                     alt={row.country_flag}
                                     className="team-icon"
                                     />
-                                    <span>{row.country}</span>
+                                    <span>{row.playerCountry}</span>
                                 </div>
                                 </td>
-                                <td>{row.team_id}</td>
+                                <td>
+                                    {row.teamID 
+                                        ? `${getTeamInfo(row.teamID).name} (${getTeamInfo(row.teamID).country})` 
+                                        : "No Team"}
+                                </td>
                                 <td>
                                 <button
                                     className="edit-btn"
-                                    onClick={() => handleEdit(row.player_id)}
+                                    onClick={() => handleEdit(row.id)}
                                 >
                                     Edit
                                 </button>
                                 <button
                                     className="remove-btn"
-                                    onClick={() => handleRemove(row.player_id)}
+                                    onClick={() => handleRemove(row.id)}
                                 >
                                     Remove
                                 </button>
@@ -189,27 +236,44 @@ const MLBBPlayersBE = ({theme}) => {
 
                     <div className="form-group">
                     <label>In-Game Name:</label>
-                    <input name="in_game_name" value={newPlayer.in_game_name} onChange={handleChange}/>
+                    <input name="playerIGN" value={newPlayer.playerIGN} onChange={handleChange}/>
                     </div>
 
                     <div className="form-group">
                     <label>Real Name:</label>
-                    <input name="real_name" value={newPlayer.real_name} onChange={handleChange}/>
+                    <input name="playerName" value={newPlayer.playerName} onChange={handleChange}/>
                     </div>
 
                     <div className="form-group">
                     <label>Role:</label>
-                    <input name="role" value={newPlayer.role} onChange={handleChange}/>
+                    <input name="playerRole" value={newPlayer.playerRole} onChange={handleChange}/>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Region:</label>
+                        <select
+                            name="playerRegion"
+                            value={newPlayer.palyerRegion}
+                            onChange={handleChange}
+                        >
+                            <option value="">-- Select Region --</option>
+                            <option value="SEA">SEA</option>
+                            <option value="Brazil">Brazil</option>
+                            <option value="MENA">MENA</option>
+                        </select>
                     </div>
 
                     <div className="form-group">
                     <label>Country:</label>
-                    <input name="country" value={newPlayer.country} onChange={handleChange}/>
+                    <input name="playerCountry" value={newPlayer.playerCountry} onChange={handleChange}/>
                     </div>
 
                     <div className="form-group">
                     <label>Country Flag:</label>
-                    <input type="file" accept="image/*" onChange={handleFlagChange} />
+                    <input 
+                        name="country_flag" 
+                        value={newPlayer.country_flag} 
+                        onChange={handleChange} />
                     {newPlayer.country_flag && (
                         <div className="flag-preview">
                         <img src={newPlayer.country_flag} alt="Preview" />
@@ -218,9 +282,22 @@ const MLBBPlayersBE = ({theme}) => {
                     </div>
 
                     <div className="form-group">
-                    <label>Team ID:</label>
-                    <input name="team_id" type="number" value={newPlayer.team_id} onChange={handleChange}/>
+                        <label>Team:</label>
+                        <select
+                            name="teamID"
+                            value={newPlayer.teamID || ""}
+                            onChange={handleChange}
+                        >
+                            <option value="">No Team</option>
+                            {teams.map(team => (
+                                <option key={team.id} value={team.id}>
+                                    {team.teamName} ({team.teamCountry})
+                                </option>
+                            ))}
+                        </select>
                     </div>
+
+                    {errorMessage && <p className="error-message">{errorMessage}</p>}
 
                     <div className="modal-actions">
                     <button

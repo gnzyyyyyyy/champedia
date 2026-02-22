@@ -1,0 +1,69 @@
+.bdm-tournament-page {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background: #0b0d24;
+  color: white;
+}
+
+.bdm-title {
+  font-size: 36px;
+  margin-bottom: 30px;
+}
+
+.table-wrapper {
+  background: #101225;
+  border-radius: 16px;
+  overflow-x: auto;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.bdm-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.bdm-table thead {
+  background: #cba468;
+  color: #000;
+}
+
+.bdm-table th,
+.bdm-table td {
+  padding: 16px 14px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.bdm-table tbody tr:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+.bdm-table .name {
+  font-weight: 600;
+  text-align: left;
+}
+
+.empty {
+  padding: 30px;
+  text-align: center;
+  opacity: 0.6;
+}
+
+/* STATUS BADGE */
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.status.upcoming {
+  background: #4c8bf5;
+  color: white;
+}
+
+.status.past {
+  background: #555;
+  color: white;
+}

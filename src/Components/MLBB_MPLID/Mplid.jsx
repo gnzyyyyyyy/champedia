@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useEffect, use } from "react";
+import axios from "axios";
 import "./Mplid.css";
 
 
@@ -45,17 +46,7 @@ const leagueInformation = [
     { about: "start date", detail: "October 10, 2025"},
     { about: "end date", detail: "November 2, 2025"}
 ]
-const teamsData = [
-  { name: "BIGETRON", logo: bigetron },
-  { name: "ALTER EGO", logo: alterego },
-  { name: "ONIC", logo: onic },
-  { name: "RRQ Hoshi #7", logo: rrq },
-  { name: "EVOS", logo: evos },
-  { name: "NATUS VINCERE ID", logo: navi },
-  { name: "GEEK FAM", logo: geekfam },
-  { name: "TEAM LIQUID ID", logo: teamliquidid },
-  { name: "DEWA UNITED", logo: dewaunited },
-];
+
 
 const standingsData = [
   { rank: "#1", team: "Onic Esports", logo: onic, match: "Tes", game: "Tes", diff: "Tes" },
@@ -82,6 +73,13 @@ const heroStatistic = [
 
 
 const Mplid = ({ theme }) => {
+  const [teams, setTeams] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:8080/mlbb_teams/country/Indonesia")
+      .then((res) => setTeams(res.data));
+  })
   return (
     <div className={`teams-page ${theme}`}>
         {/* Header */}
@@ -142,10 +140,10 @@ const Mplid = ({ theme }) => {
         <section className="country-section">
           <h2 className="country-title">Participating Teams</h2>
           <div className="team-grid">
-            {teamsData.map((team) => (
-              <div key={team.name} className="team-card">
-                <img src={team.logo} alt={team.name} className="team-logo" />
-                <p className="team-name">{team.name}</p>
+            {teams.map((team) => (
+              <div key={team.id} className="team-card">
+                <img src={team.teamLogo} alt={team.teamame} className="team-logo" />
+                <p className="team-name">{team.teamName}</p>
               </div>
             ))}
           </div>

@@ -1,38 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./MLBBTeamsBE.css";
-
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
 const MLBBTeamsBE = ({theme}) => {
-    const [teams, setTeams] = useState([
-        {
-        team_id: 1,
-        team_name: "Blacklist International",
-        team_nickname: "BLCK",
-        team_logo: "",
-        region: "SEA",
-        country: "Philippines",
-        status: "Active",
-        },
-        {
-        team_id: 2,
-        team_name: "Team Liquid",
-        team_nickname: "TL",
-        team_logo: "",
-        region: "SEA",
-        country: "Philippines",
-        status: "Active",
-        },
-        {
-        team_id: 3,
-        team_name: "Team Secret",
-        team_nickname: "TS",
-        team_logo: "",
-        region: "SEA",
-        country: "Philippines",
-        status: "Active",
-        },
-    ]);
+    const [teams, setTeams] = useState([]);
 
     const [showForm, setShowForm] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
@@ -40,86 +12,117 @@ const MLBBTeamsBE = ({theme}) => {
     const [showConfirmation, setShowConfirmation] = useState(false);
     const [teamToDelete, setTeamToDelete] = useState(null);
 
+    const [filteredTeams, setFilteredTeams] = useState([]);
+    const [selectedRegion, setSelectedRegion] = useState(null);
+
+
     const [newTeam, setNewTeam] = useState({
-        team_name: "",
-        team_nickname: "",
-        region: "",
-        country: "",
-        status: "Active",
+        teamName: "",
+        teamNickname: "",
+        teamLogo: "",
+        teamRegion: "",
+        teamCountry: "",
+        teamStatus: "Active",
     });
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/mlbb_teams")
+            .then((response) => setTeams(response.data))
+            .catch((error) => console.error(error));
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewTeam({ ...newTeam, [name]: value });
         };
 
-    const handleLogoChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const imageURL = URL.createObjectURL(file);
-            setNewTeam({ ...newTeam, team_logo: imageURL });
-        }
-    };
-
     const handleAddTeam = () => {
-        if (!newTeam.team_name || !newTeam.team_nickname || !newTeam.region || !newTeam.country) {
-            alert("Please fill all required fields!");
-            return;
-        }
-
-        const newTeamData = {
-            ...newTeam,
-            team_id: teams.length + 1,
-        };
-
-        setTeams([...teams, newTeamData]);
-        setShowForm(false);
+        axios
+            .post("http://localhost:8080/mlbb_teams", newTeam)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            })
     };
     
 
-    const handleEdit = (team_id) => {
-        const team = teams.find((t) => t.team_id === team_id);
-        if (team) {
-            setEditTeamID(team_id);
-            setNewTeam(team);
-            setIsEditing(true);
-            setShowForm(true);
-        }
+    const handleEdit = (id) => {
+        const team = teams.find(t => t.id === id);
+        setEditTeamID(id);
+        setNewTeam(team);
+        setIsEditing(true);
+        setShowForm(true);
     };
 
     const handleUpdateTeam = () => {
-        setTeams(
-        teams.map((t) =>
-            t.team_id === editTeamID ? { ...t, ...newTeam } : t
-        )
-        );
-        closeForm();
+        axios
+            .put(`http://localhost:8080/mlbb_teams/${editTeamID}`, newTeam)
+            .then(() => {
+                setShowForm(false);
+                resetForm();
+                window.location.reload();
+            })
     };
 
-    const handleRemove = (team_id) => {
-        setTeamToDelete(team_id);
+    const handleRemove = (id) => {
+        setTeamToDelete(id);
         setShowConfirmation(true);
     };
 
     const confirmRemove = () => {
-        setTeams(teams.filter((t) => t.team_id !== teamToDelete));
-        setShowConfirmation(false);
-        setTeamToDelete(null);
+        axios
+            .delete(`http://localhost:8080/mlbb_teams/${teamToDelete}`)
+            .then(() => {
+                setShowConfirmation(false);
+                setTeamToDelete(null);
+                window.location.reload();
+            })
     }
 
     const closeForm = () => {
         setShowForm(false);
         setIsEditing(false);
         setEditTeamID(null);
+        resetForm();
+    };
+
+    const resetForm = () => {
         setNewTeam({
-            team_name: "",
-            team_nickname: "",
-            team_logo: "",
-            region: "",
-            country: "",
-            status: "Active",
+            teamName: "",
+            teamNickname: "",
+            teamLogo: "",
+            teamRegion: "",
+            teamCountry: "",
+            teamStatus: "Active",
         });
     };
+
+    // <-- Region Selection --> //
+    const handleRegionSelect = (region) => {
+        setSelectedRegion(region);
+
+        if(region === "All") {
+            setFilteredTeams(teams);
+            return;
+        }
+
+        axios.get(`http://localhost:8080/mlbb_teams/region/${region}`)
+            .then((response) => {
+                setFilteredTeams(response.data);
+            })
+    }
+
+    // filteredTeams by Country
+    const groupedByCountry = filteredTeams.reduce((groups, team) => {
+        const country = team.teamCountry;
+        if (!groups[country]) {
+            groups[country] = [];
+        }
+        groups[country].push(team);
+        return groups;
+    }, {});
 
     return (
         <div className={`teams-page ${theme}`}>
@@ -131,8 +134,8 @@ const MLBBTeamsBE = ({theme}) => {
                 <button className="nav-btn" onClick={() => setShowForm(true)}>
                     Add Team +
                 </button>
-                {["SEA", "Asia", "EMEA", "South America", "North America", "China", "All"].map((region) => (
-                    <button key={region} className="nav-btn">
+                {["SEA", "Brazil", "MENA", "All"].map((region) => (
+                    <button key={region} className="nav-btn" onClick={() => handleRegionSelect(region)}>
                         {region}
                     </button>
                 ))}
@@ -161,46 +164,57 @@ const MLBBTeamsBE = ({theme}) => {
                         </tr>
                         </thead>
                         <tbody>
-                        {teams.length === 0 ? (
-                            <tr>
-                            <td colSpan="8" style={{ textAlign: "center" }}>
-                                No teams added yet.
-                            </td>
-                            </tr>
+                        {selectedRegion && Object.keys(groupedByCountry).length > 0 ? (
+                            Object.keys(groupedByCountry).map((country) => (
+                                <>
+                                    {/* Country Header Row */}
+                                    <tr className="country-header">
+                                        <td colSpan="8"><strong>{country}</strong></td>
+                                    </tr>
+
+                                    {/* Teams under this country */}
+                                    {groupedByCountry[country].map((row) => (
+                                        <tr key={row.id}>
+                                            <td>{row.id}</td>
+                                            <td>{row.teamName}</td>
+                                            <td>{row.teamNickname}</td>
+                                            <td>
+                                                <div className="team-cell">
+                                                    <img src={row.teamLogo} className="team-icon" />
+                                                    <span>{row.teamName}</span>
+                                                </div>
+                                            </td>
+                                            <td>{row.teamRegion}</td>
+                                            <td>{row.teamCountry}</td>
+                                            <td>{row.teamStatus}</td>
+                                            <td>
+                                                <button className="edit-btn" onClick={() => handleEdit(row.id)}>Edit</button>
+                                                <button className="remove-btn" onClick={() => handleRemove(row.id)}>Remove</button>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </>
+                            ))
                         ) : (
                             teams.map((row) => (
-                            <tr key={row.team_id}>
-                                <td>{row.team_id}</td>
-                                <td>{row.team_name}</td>
-                                <td>{row.team_nickname}</td>
-                                <td>
-                                <div className="team-cell">
-                                    <img
-                                    src={row.team_logo}
-                                    alt={row.team_name}
-                                    className="team-icon"
-                                    />
-                                    <span>{row.team_name}</span>
-                                </div>
-                                </td>
-                                <td>{row.region}</td>
-                                <td>{row.country}</td>
-                                <td>{row.status}</td>
-                                <td>
-                                <button
-                                    className="edit-btn"
-                                    onClick={() => handleEdit(row.team_id)}
-                                >
-                                    Edit
-                                </button>
-                                <button
-                                    className="remove-btn"
-                                    onClick={() => handleRemove(row.team_id)}
-                                >
-                                    Remove
-                                </button>
-                                </td>
-                            </tr>
+                                <tr key={row.id}>
+                                    <td>{row.id}</td>
+                                    <td>{row.teamName}</td>
+                                    <td>{row.teamNickname}</td>
+                                    <td>
+                                        <div className="team-cell">
+                                            <img src={row.teamLogo} className="team-icon" />
+                                            <span>{row.teamName}</span>
+                                        </div>
+                                    </td>
+                                    <td>{row.teamRegion}</td>
+                                    <td>{row.teamCountry}</td>
+                                    <td>{row.teamStatus}</td>
+                                    <td>
+                                        <button className="edit-btn" onClick={() => handleEdit(row.id)}>Edit</button>
+                                        <button className="remove-btn" onClick={() => handleRemove(row.id)}>Remove</button>
+                                    </td>
+                                </tr>
                             ))
                         )}
                         </tbody>
@@ -216,30 +230,51 @@ const MLBBTeamsBE = ({theme}) => {
 
                 <div className="form-group">
                 <label>Team Name:</label>
-                <input name="team_name" value={newTeam.team_name} onChange={handleChange} />
+                <input name="teamName" value={newTeam.teamName} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                 <label>Team Nickname:</label>
-                <input name="team_nickname" value={newTeam.team_nickname} onChange={handleChange} />
+                <input name="teamNickname" value={newTeam.teamNickname} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
-                <label>Region:</label>
-                <input name="region" value={newTeam.region} onChange={handleChange} />
+                    <label>Region:</label>
+                    <select
+                        name="teamRegion"
+                        value={newTeam.teamRegion}
+                        onChange={handleChange}
+                    >
+                        <option value="">-- Select Region --</option>
+                        <option value="SEA">SEA</option>
+                        <option value="Brazil">Brazil</option>
+                        <option value="MENA">MENA</option>
+                    </select>
                 </div>
 
                 <div className="form-group">
                 <label>Country:</label>
-                <input name="country" value={newTeam.country} onChange={handleChange} />
+                <input name="teamCountry" value={newTeam.teamCountry} onChange={handleChange} />
+                </div>
+
+                <div className="form-group">
+                <label>Status:</label>
+                <select name="teamStatus" value={newTeam.teamStatus} onChange={handleChange}>
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
                 </div>
 
                 <div className="form-group">
                 <label>Team Logo:</label>
-                <input type="file" accept="image/*" onChange={handleLogoChange} />
-                {newTeam.team_logo && (
+                <input
+                    name="teamLogo"
+                    value={newTeam.teamLogo}
+                    onChange={handleChange}
+                    />
+                {newTeam.teamLogo && (
                     <div className="logo-preview">
-                    <img src={newTeam.team_logo} alt="Preview" />
+                    <img src={newTeam.teamLogo} alt="Preview" />
                     </div>
                 )}
                 </div>

@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./MLBBPatches.css";
-
+import axios from "axios";
 import mlbbBanner from "../../assets/images/mlbb_teams/mlbb_banner.png";
 
-const patches = [
-  { patch: "Patch 1.0", date: "August 22, 2025", highlights: "- Hero Adjustments\n- Equipment Adjustments\n- Emblem Adjustments\n- Battle Spells Adjustments" },
-  { patch: "Patch 1.1", date: "September 5, 2025", highlights: "- Hero Balancing\n- New Hero Release\n- UI Improvements\n- Bug Fixes" },
-  { patch: "Patch 1.2", date: "October 12, 2025", highlights: "- Item Balancing\n- Emblem Adjustments\n- Map Optimization" },
-];
-
 const MLBBPatches = ({ theme }) => {
+    const [patches, setPatches] = useState([]);
+
+    useEffect(() => {
+        axios
+            .get("http://localhost:8080/mlbb_patches")
+            .then((res) => {
+                const sorted = res.data.sort((a, b) => new Date(b.patchDate) - new Date(a.patchDate));
+                setPatches(sorted);
+            });
+    }, []);
     return (
         <div className={`mlbb-patches ${theme}`}>
 
@@ -54,10 +58,10 @@ const MLBBPatches = ({ theme }) => {
                 <tbody>
                 {patches.map((row, index) => (
                     <tr key={index}>
-                    <td>{row.patch}</td>
-                    <td>{row.date}</td>
+                    <td>{row.patchVersion}</td>
+                    <td>{row.patchDate}</td>
                     <td>
-                        {row.highlights.split("\n").map((line, i) => (
+                        {row.patchHighlights.split("\n").map((line, i) => (
                         <div key={i}>{line}</div>
                         ))}
                     </td>

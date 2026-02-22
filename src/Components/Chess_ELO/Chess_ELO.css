@@ -1,0 +1,122 @@
+/* =========================
+   PAGE WRAPPER
+========================= */
+.chess-table-page {
+  min-height: 100vh;
+  padding: 40px 60px;
+  background-color: var(--bg, #0b0d24);
+  color: var(--text, #ffffff);
+  transition: background-color 0.3s ease;
+}
+
+.chess-table-page h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 30px;
+}
+
+/* =========================
+   TABLE
+========================= */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--card-bg, #101225);
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+/* HEADER */
+.table thead {
+  background-color: var(--gold, #cba468);
+  color: #000;
+}
+
+.table th {
+  padding: 14px 12px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+/* BODY */
+.table td {
+  padding: 14px 12px;
+  font-size: 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+}
+
+.table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* =========================
+   SPECIAL COLUMNS
+========================= */
+
+/* ELO rating highlight */
+.table td:nth-child(3) {
+  font-weight: 700;
+  color: var(--gold, #cba468);
+}
+
+/* World Rank */
+.table td:nth-child(4) {
+  font-weight: 600;
+}
+
+/* Chess Title */
+.table td:nth-child(5) {
+  font-weight: 700;
+  color: #4c8bf5;
+}
+
+/* Active status */
+.table td:nth-child(6) {
+  font-weight: 700;
+}
+
+.table td:nth-child(6)::before {
+  content: "● ";
+  font-size: 12px;
+}
+
+.table td:nth-child(6):contains("Yes") {
+  color: #4caf50;
+}
+
+.table td:nth-child(6):contains("No") {
+  color: #f44336;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+.empty-row td {
+  padding: 30px;
+  text-align: center;
+  font-style: italic;
+  color: #aaa;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+@media (max-width: 900px) {
+  .chess-table-page {
+    padding: 20px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 12px;
+    padding: 10px;
+  }
+}
